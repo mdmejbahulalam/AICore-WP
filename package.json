@@ -1,0 +1,15 @@
+{
+  "name": "aicore-wp",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Release tooling for the AICore WordPress plugin.",
+  "scripts": {
+    "build": "node scripts/build-admin-assets.mjs",
+    "verify:release-assets": "node scripts/verify-release-assets.mjs",
+    "package": "bash scripts/package-plugin.sh",
+    "release": "bash scripts/release.sh"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
