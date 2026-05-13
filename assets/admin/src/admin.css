@@ -1,0 +1,18 @@
+.aicore-admin-app {
+  box-sizing: border-box;
+  max-width: 960px;
+}
+
+.aicore-admin-app *,
+.aicore-admin-app *::before,
+.aicore-admin-app *::after {
+  box-sizing: inherit;
+}
+
+.aicore-admin-notice {
+  background: #fff;
+  border-left: 4px solid #2271b1;
+  box-shadow: 0 1px 1px rgb(0 0 0 / 4%);
+  margin: 16px 0;
+  padding: 12px;
+}
