@@ -1,0 +1,8 @@
+{
+  "id": "mcp",
+  "name": "AICore Mcp",
+  "enabledByDefault": true,
+  "description": "Enterprise AI mcp capability pack for AICore WP.",
+  "events": ["aicore.mcp.created", "aicore.mcp.updated"],
+  "permissions": ["aicore:mcp:read", "aicore:mcp:write"]
+}

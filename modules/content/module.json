@@ -1,0 +1,8 @@
+{
+  "id": "content",
+  "name": "AICore Content",
+  "enabledByDefault": true,
+  "description": "Enterprise AI content capability pack for AICore WP.",
+  "events": ["aicore.content.created", "aicore.content.updated"],
+  "permissions": ["aicore:content:read", "aicore:content:write"]
+}

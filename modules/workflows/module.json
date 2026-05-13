@@ -1,0 +1,8 @@
+{
+  "id": "workflows",
+  "name": "AICore Workflows",
+  "enabledByDefault": true,
+  "description": "Enterprise AI workflows capability pack for AICore WP.",
+  "events": ["aicore.workflows.created", "aicore.workflows.updated"],
+  "permissions": ["aicore:workflows:read", "aicore:workflows:write"]
+}

@@ -1,0 +1,8 @@
+{
+  "id": "voice",
+  "name": "AICore Voice",
+  "enabledByDefault": true,
+  "description": "Enterprise AI voice capability pack for AICore WP.",
+  "events": ["aicore.voice.created", "aicore.voice.updated"],
+  "permissions": ["aicore:voice:read", "aicore:voice:write"]
+}

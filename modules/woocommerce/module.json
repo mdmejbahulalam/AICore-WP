@@ -1,0 +1,8 @@
+{
+  "id": "woocommerce",
+  "name": "AICore Woocommerce",
+  "enabledByDefault": true,
+  "description": "Enterprise AI woocommerce capability pack for AICore WP.",
+  "events": ["aicore.woocommerce.created", "aicore.woocommerce.updated"],
+  "permissions": ["aicore:woocommerce:read", "aicore:woocommerce:write"]
+}

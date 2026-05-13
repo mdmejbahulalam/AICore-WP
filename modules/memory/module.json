@@ -1,0 +1,8 @@
+{
+  "id": "memory",
+  "name": "AICore Memory",
+  "enabledByDefault": true,
+  "description": "Enterprise AI memory capability pack for AICore WP.",
+  "events": ["aicore.memory.created", "aicore.memory.updated"],
+  "permissions": ["aicore:memory:read", "aicore:memory:write"]
+}

@@ -1,0 +1,8 @@
+{
+  "id": "integrations",
+  "name": "AICore Integrations",
+  "enabledByDefault": true,
+  "description": "Enterprise AI integrations capability pack for AICore WP.",
+  "events": ["aicore.integrations.created", "aicore.integrations.updated"],
+  "permissions": ["aicore:integrations:read", "aicore:integrations:write"]
+}

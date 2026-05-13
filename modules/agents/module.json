@@ -1,0 +1,8 @@
+{
+  "id": "agents",
+  "name": "AICore Agents",
+  "enabledByDefault": true,
+  "description": "Enterprise AI agents capability pack for AICore WP.",
+  "events": ["aicore.agents.created", "aicore.agents.updated"],
+  "permissions": ["aicore:agents:read", "aicore:agents:write"]
+}

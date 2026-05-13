@@ -1,0 +1,8 @@
+{
+  "id": "rag",
+  "name": "AICore Rag",
+  "enabledByDefault": true,
+  "description": "Enterprise AI rag capability pack for AICore WP.",
+  "events": ["aicore.rag.created", "aicore.rag.updated"],
+  "permissions": ["aicore:rag:read", "aicore:rag:write"]
+}
