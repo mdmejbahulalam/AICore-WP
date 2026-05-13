@@ -1,3 +1,5 @@
+declare module '*.css';
+
 export type AICoreConfig = {
   restUrl: string;
   nonce: string;

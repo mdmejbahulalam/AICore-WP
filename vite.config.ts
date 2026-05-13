@@ -4,14 +4,13 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react()],
   build: {
-    outDir: 'assets/admin/dist',
+    outDir: 'dist',
     emptyOutDir: true,
     manifest: true,
     rollupOptions: {
-      input: 'assets/admin/src/main.tsx',
       output: {
-        entryFileNames: 'aicore-admin.js',
-        assetFileNames: 'aicore-admin.[ext]'
+        entryFileNames: 'assets/aicore-admin.js',
+        assetFileNames: 'assets/aicore-admin.[ext]'
       }
     }
   }
