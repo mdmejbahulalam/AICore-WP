@@ -1,0 +1,13 @@
+{
+  "name": "aicore-wp",
+  "version": "0.1.0",
+  "description": "WordPress admin assets for AICore-WP.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vite build --manifest .vite/manifest.json"
+  },
+  "devDependencies": {
+    "vite": "^8.0.11"
+  }
+}
