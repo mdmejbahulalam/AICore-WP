@@ -1,6 +1,5 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@config "../../../tailwind.config.ts";
 
 #aicore-wp-root { margin-left: -20px; }
 .aicore-wp-root * { box-sizing: border-box; }
