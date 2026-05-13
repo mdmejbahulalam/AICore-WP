@@ -1,0 +1,17 @@
+{
+  "name": "aicore/wp-plugin",
+  "description": "AICore WordPress plugin release package.",
+  "type": "wordpress-plugin",
+  "license": "proprietary",
+  "require": {},
+  "require-dev": {},
+  "autoload": {
+    "psr-4": {
+      "AICore\\WP\\": "src/"
+    }
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "sort-packages": true
+  }
+}
