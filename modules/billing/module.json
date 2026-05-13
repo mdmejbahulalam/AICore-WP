@@ -1,0 +1,8 @@
+{
+  "id": "billing",
+  "name": "AICore Billing",
+  "enabledByDefault": true,
+  "description": "Enterprise AI billing capability pack for AICore WP.",
+  "events": ["aicore.billing.created", "aicore.billing.updated"],
+  "permissions": ["aicore:billing:read", "aicore:billing:write"]
+}

@@ -1,0 +1,8 @@
+{
+  "id": "security",
+  "name": "AICore Security",
+  "enabledByDefault": true,
+  "description": "Enterprise AI security capability pack for AICore WP.",
+  "events": ["aicore.security.created", "aicore.security.updated"],
+  "permissions": ["aicore:security:read", "aicore:security:write"]
+}

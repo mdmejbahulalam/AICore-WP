@@ -1,0 +1,8 @@
+{
+  "id": "chatbots",
+  "name": "AICore Chatbots",
+  "enabledByDefault": true,
+  "description": "Enterprise AI chatbots capability pack for AICore WP.",
+  "events": ["aicore.chatbots.created", "aicore.chatbots.updated"],
+  "permissions": ["aicore:chatbots:read", "aicore:chatbots:write"]
+}

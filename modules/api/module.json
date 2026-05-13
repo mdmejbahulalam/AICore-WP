@@ -1,0 +1,8 @@
+{
+  "id": "api",
+  "name": "AICore Api",
+  "enabledByDefault": true,
+  "description": "Enterprise AI api capability pack for AICore WP.",
+  "events": ["aicore.api.created", "aicore.api.updated"],
+  "permissions": ["aicore:api:read", "aicore:api:write"]
+}

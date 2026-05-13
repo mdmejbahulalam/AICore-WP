@@ -1,0 +1,17 @@
+{
+  "name": "aicore/wp",
+  "description": "Enterprise-grade AI Operating System for WordPress.",
+  "type": "wordpress-plugin",
+  "license": "GPL-2.0-or-later",
+  "require": {
+    "php": ">=8.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "AICore\\WP\\": "src/"
+    }
+  },
+  "scripts": {
+    "lint": "php -l aicore-wp.php && find src modules -name '*.php' -print0 | xargs -0 -n1 php -l"
+  }
+}

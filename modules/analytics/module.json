@@ -1,0 +1,8 @@
+{
+  "id": "analytics",
+  "name": "AICore Analytics",
+  "enabledByDefault": true,
+  "description": "Enterprise AI analytics capability pack for AICore WP.",
+  "events": ["aicore.analytics.created", "aicore.analytics.updated"],
+  "permissions": ["aicore:analytics:read", "aicore:analytics:write"]
+}

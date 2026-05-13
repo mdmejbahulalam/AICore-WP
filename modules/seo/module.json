@@ -1,0 +1,8 @@
+{
+  "id": "seo",
+  "name": "AICore Seo",
+  "enabledByDefault": true,
+  "description": "Enterprise AI seo capability pack for AICore WP.",
+  "events": ["aicore.seo.created", "aicore.seo.updated"],
+  "permissions": ["aicore:seo:read", "aicore:seo:write"]
+}

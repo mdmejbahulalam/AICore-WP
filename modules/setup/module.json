@@ -1,0 +1,8 @@
+{
+  "id": "setup",
+  "name": "AICore Setup",
+  "enabledByDefault": true,
+  "description": "Enterprise AI setup capability pack for AICore WP.",
+  "events": ["aicore.setup.created", "aicore.setup.updated"],
+  "permissions": ["aicore:setup:read", "aicore:setup:write"]
+}

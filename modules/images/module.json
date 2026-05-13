@@ -1,0 +1,8 @@
+{
+  "id": "images",
+  "name": "AICore Images",
+  "enabledByDefault": true,
+  "description": "Enterprise AI images capability pack for AICore WP.",
+  "events": ["aicore.images.created", "aicore.images.updated"],
+  "permissions": ["aicore:images:read", "aicore:images:write"]
+}
