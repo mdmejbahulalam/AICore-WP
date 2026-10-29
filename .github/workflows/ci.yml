@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [main, integration]
+  pull_request:
+
+jobs:
+  php:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer:v2
+      - run: composer install --no-interaction --prefer-dist
+      - name: Lint PHP
+        run: composer lint
+      - name: PHPUnit
+        run: composer test
+
+  admin:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Type-check
+        run: npm run lint
+      - name: Build admin assets
+        run: npm run build
+      - name: Verify manifest
+        run: npm run verify:release-assets

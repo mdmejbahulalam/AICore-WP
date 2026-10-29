@@ -37,7 +37,7 @@ final class RestRouter
         ]);
         register_rest_route(self::NAMESPACE, '/mcp/tools', [
             'methods' => 'GET',
-            'permission_callback' => '__return_true',
+            'permission_callback' => [$this, 'mcpPermission'],
             'callback' => fn () => rest_ensure_response((new ToolRegistry())->tools()),
         ]);
         register_rest_route(self::NAMESPACE, '/mcp/execute', [

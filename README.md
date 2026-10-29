@@ -15,9 +15,22 @@ AICore WP is an enterprise-grade AI Operating System for WordPress. It provides 
 
 ```bash
 composer install
-npm install
-npm run build
-php -l aicore-wp.php && find src modules templates tests -name '*.php' -print0 | xargs -0 -n1 php -l
+npm ci
+npm run build        # compiles the admin app into assets/admin/dist/
+composer lint        # php -l on all PHP files
+composer test        # PHPUnit
+npm run lint         # TypeScript type-check
+```
+
+Local setup notes: [`docs/dev/LOCAL-XAMPP.md`](docs/dev/LOCAL-XAMPP.md). Roadmap: [`docs/ROADMAP.md`](docs/ROADMAP.md).
+
+## Releasing
+
+A production zip must contain the compiled admin assets (`assets/admin/dist/.vite/manifest.json`); do not zip a raw
+Git checkout. Build one with:
+
+```bash
+npm run release   # npm ci, build, composer install --no-dev, verify assets, package -> build/aicore-wp.zip
 ```
 
 ## Production

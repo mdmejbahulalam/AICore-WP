@@ -12,6 +12,13 @@
     }
   },
   "scripts": {
-    "lint": "php -l aicore-wp.php && find src modules -name '*.php' -print0 | xargs -0 -n1 php -l"
+    "lint": "php -l aicore-wp.php && find src modules templates tests -name '*.php' -print0 | xargs -0 -n1 php -l",
+    "test": "phpunit"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "11.5.50"
+  },
+  "config": {
+    "sort-packages": true
   }
 }

@@ -8,13 +8,18 @@
 - Node.js 20+ for building admin assets
 - Composer for production autoload generation
 
-## Build
+## Build and package
+
+Deploy from a production zip, not from an unbuilt source checkout: WordPress cannot resolve the compiled admin
+assets unless `assets/admin/dist/.vite/manifest.json` exists.
 
 ```bash
-composer install --no-dev --optimize-autoloader
-npm install
-npm run build
+npm run release
 ```
+
+This runs `npm ci`, `npm run build`, `composer install --no-dev --optimize-autoloader`, `npm run verify:release-assets`
+and `npm run package`, producing `build/aicore-wp.zip`. The CI workflow (`.github/workflows/release-package.yml`) runs
+the same steps and asserts the manifest is inside the final zip.
 
 ## Configure providers
 

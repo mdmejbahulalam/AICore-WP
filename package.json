@@ -6,7 +6,10 @@
   "scripts": {
     "build": "tsc --noEmit && vite build",
     "dev": "vite --host 0.0.0.0",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "verify:release-assets": "node scripts/verify-release-assets.mjs",
+    "package": "bash scripts/package-plugin.sh",
+    "release": "bash scripts/release.sh"
   },
   "dependencies": {
     "@vitejs/plugin-react": "latest",
@@ -30,5 +33,8 @@
     "autoprefixer": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest"
+  },
+  "engines": {
+    "node": ">=20"
   }
 }
