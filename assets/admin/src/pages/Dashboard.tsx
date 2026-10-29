@@ -22,7 +22,7 @@ export function Dashboard() {
         {['AI commands', 'Chatbot leads', 'Workflow runs', 'SEO fixes'].map((label, index) => <Card key={label}><Badge>Live</Badge><h3 className="mt-4 text-3xl font-bold">{[248, 91, 1204, 37][index]}</h3><p className="text-sm text-slate-500">{label}</p></Card>)}
       </div>
       <Card><div className="mb-4 flex items-center justify-between"><h2 className="text-xl font-bold">Token usage & AI activity</h2><Badge>enterprise metering</Badge></div><div className="h-72"><ResponsiveContainer><AreaChart data={chart}><XAxis dataKey="name"/><Tooltip/><Area dataKey="tokens" stroke="#3485ff" fill="#3485ff33"/></AreaChart></ResponsiveContainer></div></Card>
-      <Card><h2 className="mb-4 text-xl font-bold">Visual workflow builder</h2><div className="h-80 overflow-hidden rounded-3xl border border-white/10"><ReactFlow nodes={nodes} edges={edges} fitView><MiniMap/><Controls/><Background/></ReactFlow></div></Card>
+      <Card><h2 className="mb-4 text-xl font-bold">Visual workflow builder</h2><div className="h-80 overflow-hidden rounded-3xl border border-slate-200 dark:border-white/10"><ReactFlow nodes={nodes} edges={edges} fitView><MiniMap/><Controls/><Background/></ReactFlow></div></Card>
     </section>
     <aside className="space-y-6">
       <Card><h2 className="text-xl font-bold">AI Activity Timeline</h2>{['SEO Agent optimized 12 posts', 'Content Agent drafted landing page', 'MCP create_post approved', 'RAG indexed product catalog'].map((event) => <div key={event} className="mt-4 rounded-2xl bg-slate-100 p-3 text-sm dark:bg-white/5">{event}</div>)}</Card>

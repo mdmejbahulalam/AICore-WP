@@ -2,7 +2,7 @@ import type { ButtonHTMLAttributes, ReactNode } from 'react';
 import { clsx } from 'clsx';
 
 export function Card({ children, className = '' }: { children: ReactNode; className?: string }) {
-  return <section className={clsx('rounded-3xl border border-white/10 bg-white/80 p-5 shadow-xl backdrop-blur dark:bg-slate-950/70', className)}>{children}</section>;
+  return <section className={clsx('rounded-3xl border border-slate-200 dark:border-white/10 bg-white/80 p-5 shadow-xl backdrop-blur dark:bg-slate-950/70', className)}>{children}</section>;
 }
 
 export function Button({ children, className = '', ...props }: ButtonHTMLAttributes<HTMLButtonElement>) {

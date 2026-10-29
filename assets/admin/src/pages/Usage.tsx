@@ -21,7 +21,7 @@ export function Usage() {
   return <div className="space-y-4">
     <div className="flex items-center gap-2 text-sm">
       <span className="text-slate-500">Period</span>
-      {[7, 30, 90].map((value) => <button key={value} onClick={() => setDays(value)} className={`rounded-xl px-3 py-1 ${days === value ? 'bg-aicore-500 text-white' : 'border border-white/10'}`}>{value} days</button>)}
+      {[7, 30, 90].map((value) => <button key={value} onClick={() => setDays(value)} className={`rounded-xl px-3 py-1 ${days === value ? 'bg-aicore-500 text-white' : 'border border-slate-200 dark:border-white/10'}`}>{value} days</button>)}
     </div>
     <div className="grid gap-4 md:grid-cols-4">
       {[['Requests', number.format(totals.calls)], ['Input tokens', number.format(totals.input_tokens)], ['Output tokens', number.format(totals.output_tokens)], ['Estimated cost', `$${totals.cost.toFixed(4)}`]].map(([label, value]) =>

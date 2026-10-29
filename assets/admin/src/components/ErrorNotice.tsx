@@ -30,7 +30,7 @@ export class ErrorBoundary extends Component<{ children: ReactNode }, { error: E
   render() {
     if (this.state.error) {
       return <div className="p-6"><ErrorNotice error={this.state.error} />
-        <button className="mt-3 rounded-2xl border border-white/10 px-4 py-2 text-sm" onClick={() => this.setState({ error: null })}>Try again</button>
+        <button className="mt-3 rounded-2xl border border-slate-200 dark:border-white/10 px-4 py-2 text-sm" onClick={() => this.setState({ error: null })}>Try again</button>
       </div>;
     }
     return this.props.children;
