@@ -6,7 +6,10 @@
   "requires": [],
   "capabilities": [
     "GET /memories",
-    "POST /memories"
+    "POST /memories",
+    "POST /memories/{id}",
+    "DELETE /memories/{id}",
+    "POST /memories/reindex"
   ],
   "events": [
     "aicore.memory.created",

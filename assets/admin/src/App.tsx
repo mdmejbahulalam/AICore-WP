@@ -9,6 +9,8 @@ import { FeaturePage } from './pages/FeaturePage';
 import { ProviderSettings } from './pages/ProviderSettings';
 import { Modules } from './pages/Modules';
 import { Usage } from './pages/Usage';
+import { Chat } from './pages/Chat';
+import { MemoryManager } from './pages/Memory';
 
 const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false, refetchOnWindowFocus: false } } });
 
@@ -18,6 +20,8 @@ function Page({ name }: { name: string }): ReactNode {
     case 'Provider Settings': return <ProviderSettings />;
     case 'Modules': return <Modules />;
     case 'Usage': return <Usage />;
+    case 'AI Chat Center': return <Chat />;
+    case 'AI Memory Manager': return <MemoryManager />;
     default: return <FeaturePage title={name} />;
   }
 }
@@ -28,7 +32,7 @@ export function App() {
   return <QueryClientProvider client={queryClient}>
     <div className={theme === 'dark' ? 'dark' : ''}>
       <Shell><ErrorBoundary key={activePage}><Page name={activePage} /></ErrorBoundary></Shell>
-      <FloatingAssistant />
+      {activePage !== 'AI Chat Center' && <FloatingAssistant />}
     </div>
   </QueryClientProvider>;
 }

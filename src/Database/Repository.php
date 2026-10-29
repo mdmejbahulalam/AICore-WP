@@ -25,6 +25,17 @@ final class Repository
         return $this->db->update($this->db->prefix . $table, $data, ['id' => $id]) !== false;
     }
 
+    public function delete(string $table, int $id): bool
+    {
+        return $this->db->delete($this->db->prefix . $table, ['id' => $id]) !== false;
+    }
+
+    /** @param array<string,scalar> $where Column => value pairs, combined with AND. */
+    public function deleteBy(string $table, array $where): bool
+    {
+        return $this->db->delete($this->db->prefix . $table, $where) !== false;
+    }
+
     /** @return array<string,mixed>|null */
     public function find(string $table, int $id): ?array
     {

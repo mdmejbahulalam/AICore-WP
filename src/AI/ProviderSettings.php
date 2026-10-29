@@ -16,7 +16,7 @@ final class ProviderSettings
     {
     }
 
-    /** @return array{api_key:string,model:string,max_tokens:int,base_url:string} Decrypted; for server-side use only. */
+    /** @return array{api_key:string,model:string,max_tokens:int,base_url:string,embedding_model:string} Decrypted; for server-side use only. */
     public function config(string $id): array
     {
         $stored = (array) (((array) get_option(self::OPTION, []))[$id] ?? []);
@@ -25,10 +25,11 @@ final class ProviderSettings
             'model' => (string) ($stored['model'] ?? ''),
             'max_tokens' => (int) ($stored['max_tokens'] ?? 0),
             'base_url' => (string) ($stored['base_url'] ?? ''),
+            'embedding_model' => (string) ($stored['embedding_model'] ?? ''),
         ];
     }
 
-    /** @return array{has_key:bool,key_hint:string,model:string,max_tokens:int,base_url:string} Safe to send to the browser. */
+    /** @return array{has_key:bool,key_hint:string,model:string,max_tokens:int,base_url:string,embedding_model:string} Safe to send to the browser. */
     public function public(string $id): array
     {
         $config = $this->config($id);
@@ -39,11 +40,12 @@ final class ProviderSettings
             'model' => $config['model'],
             'max_tokens' => $config['max_tokens'],
             'base_url' => $config['base_url'],
+            'embedding_model' => $config['embedding_model'],
         ];
     }
 
     /**
-     * @param array<string,mixed> $input api_key (non-empty replaces the key), clear_key, model, max_tokens, base_url.
+     * @param array<string,mixed> $input api_key (non-empty replaces the key), clear_key, model, embedding_model, max_tokens, base_url.
      *                                   Omitted fields are left unchanged.
      */
     public function save(string $id, array $input): void
@@ -60,6 +62,9 @@ final class ProviderSettings
         }
         if (array_key_exists('model', $input)) {
             $stored['model'] = sanitize_text_field((string) $input['model']);
+        }
+        if (array_key_exists('embedding_model', $input)) {
+            $stored['embedding_model'] = sanitize_text_field((string) $input['embedding_model']);
         }
         if (array_key_exists('max_tokens', $input)) {
             $stored['max_tokens'] = max(0, min(200000, (int) $input['max_tokens']));

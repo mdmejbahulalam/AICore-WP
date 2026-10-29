@@ -27,11 +27,17 @@ for new PHP, `npm run build` + `php -l` green, manual verification on the local 
 - Moved to later phases: streaming responses (SSE) → Phase 2 with the chat UI; per-module settings → the phase that
   first needs them.
 
-## Phase 2 — Chat + Memory
-- Chat module: persisted conversations/messages, history list, rename/delete, streaming UI (SSE; needs a cURL-based
-  streaming transport in the provider layer), model picker.
-- Memory module: CRUD of user/site memories injected into prompts; real embeddings via provider `embeddings` endpoints (replace fake `embed()`).
-- **Done when:** multi-turn chat survives reload; memories change answers.
+## Phase 2 — Chat + Memory (done)
+- Chat module: persisted per-user conversations and messages (auto-titles, rename, delete), provider/model picker,
+  history trimmed to a character budget, streaming replies over Server-Sent Events (`POST /chat/conversations/{id}/stream`)
+  using a cURL write hook on WordPress's HTTP API; non-streaming `/messages` endpoint as well. Streaming decoders for the
+  OpenAI-compatible and Anthropic formats. Usage is logged for every call (estimated tokens when a provider omits them).
+- Memory module: site-wide and per-user memories with CRUD, real embeddings through the providers' embeddings endpoints
+  (OpenAI, OpenRouter, Gemini, Ollama), vectors stored in `aicore_ai_embeddings`. When there are more memories than fit in
+  a prompt the most relevant ones are chosen by cosine similarity; otherwise all are included.
+- Admin UI: Chat page (streaming, stop button) and Memory manager; white (light) theme by default.
+- Known gaps: replies render as plain text (no Markdown); stopping a stream discards the partial reply server-side;
+  Claude/DeepSeek/Groq have no embeddings endpoint, so embeddings need an OpenAI, OpenRouter, Gemini or Ollama setup.
 
 ## Phase 3 — Content, SEO, Images
 - Content: generate/rewrite/expand/translate; "create draft post" action; Gutenberg sidebar panel.

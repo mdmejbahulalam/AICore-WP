@@ -46,6 +46,30 @@ final class RemoteProviderTest extends TestCase
         self::assertArrayNotHasKey('Authorization', WpStub::$requests[0]['args']['headers']);
     }
 
+    public function testEmbeddingsUseTheEmbeddingsEndpointAndCatalogModel(): void
+    {
+        WpStub::$options['aicore_wp_provider_settings'] = ['openrouter' => ['api_key' => 'k']];
+        $this->respondWith(200, ['model' => 'openai/text-embedding-3-small', 'data' => [['embedding' => [0.5, 0.25]]], 'usage' => ['prompt_tokens' => 4]]);
+
+        $result = $this->provider('openrouter')->embed('hello');
+
+        self::assertSame('https://openrouter.ai/api/v1/embeddings', WpStub::$requests[0]['url']);
+        self::assertSame('openai/text-embedding-3-small', $this->sentBody()['model']);
+        self::assertSame('hello', $this->sentBody()['input']);
+        self::assertSame([0.5, 0.25], $result->vector);
+        self::assertSame(4, $result->tokens);
+    }
+
+    public function testEmbeddingsRejectedForProvidersWithoutSupport(): void
+    {
+        WpStub::$options['aicore_wp_provider_settings'] = ['claude' => ['api_key' => 'k']];
+
+        self::assertFalse($this->provider('claude')->supportsEmbeddings());
+        self::assertTrue($this->provider('openai')->supportsEmbeddings());
+        $this->expectExceptionMessage('claude does not support embeddings');
+        $this->provider('claude')->embed('x');
+    }
+
     public function testEncryptedKeyIsDecryptedForTheRequest(): void
     {
         $settings = new ProviderSettings(new Crypto());

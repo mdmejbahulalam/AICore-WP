@@ -6,12 +6,15 @@ namespace AICore\WP\Core;
 
 use AICore\WP\Admin\AdminApp;
 use AICore\WP\AI\AIService;
+use AICore\WP\AI\EmbeddingStore;
 use AICore\WP\AI\Orchestrator;
 use AICore\WP\AI\ProviderRegistry;
 use AICore\WP\AI\ProviderSettings;
 use AICore\WP\AI\UsageTracker;
 use AICore\WP\Api\RestRouter;
+use AICore\WP\Chat\ChatService;
 use AICore\WP\Database\Repository;
+use AICore\WP\Memory\MemoryService;
 use AICore\WP\Modules\ModuleRegistry;
 use AICore\WP\Queue\QueueWorker;
 use AICore\WP\Security\AuditLogger;
@@ -76,6 +79,9 @@ final class Plugin
         $this->container->singleton(ProviderRegistry::class, fn (Container $c): ProviderRegistry => new ProviderRegistry($c->get(ProviderSettings::class)));
         $this->container->singleton(UsageTracker::class, fn (Container $c): UsageTracker => new UsageTracker($c->get(Repository::class)));
         $this->container->singleton(AIService::class, fn (Container $c): AIService => new AIService($c->get(ProviderRegistry::class), $c->get(UsageTracker::class)));
+        $this->container->singleton(EmbeddingStore::class, fn (Container $c): EmbeddingStore => new EmbeddingStore($c->get(Repository::class)));
+        $this->container->singleton(MemoryService::class, fn (Container $c): MemoryService => new MemoryService($c->get(Repository::class), $c->get(AIService::class), $c->get(EmbeddingStore::class)));
+        $this->container->singleton(ChatService::class, fn (Container $c): ChatService => new ChatService($c->get(Repository::class), $c->get(AIService::class), $c->get(MemoryService::class)));
         $this->container->singleton(Orchestrator::class, fn (Container $c): Orchestrator => new Orchestrator($c->get(AIService::class), $c->get(Repository::class), $c->get(AuditLogger::class)));
         $this->container->singleton(ModuleRegistry::class, fn (): ModuleRegistry => new ModuleRegistry());
         $this->container->singleton(RestRouter::class, fn (Container $c): RestRouter => new RestRouter($c));

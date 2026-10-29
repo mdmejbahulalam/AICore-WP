@@ -32,6 +32,23 @@ final class ProviderRegistry
         return $this->providers[$id];
     }
 
+    /**
+     * The provider used for embeddings: the default provider if it supports them, otherwise the first configured
+     * one that does. Returns null when none is available.
+     */
+    public function embeddingProviderId(): ?string
+    {
+        foreach (array_unique([$this->settings->defaultProvider(), 'openai', 'openrouter', 'gemini']) as $id) {
+            if (! isset($this->providers[$id]) || ! $this->providers[$id]->supportsEmbeddings()) {
+                continue;
+            }
+            if ($this->settings->config($id)['api_key'] !== '' || ! (ProviderCatalog::all()[$id]['needs_key'] ?? true)) {
+                return $id;
+            }
+        }
+        return null;
+    }
+
     /** @return list<string> */
     public function ids(): array
     {

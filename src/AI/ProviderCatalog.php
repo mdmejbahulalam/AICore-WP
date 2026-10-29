@@ -21,6 +21,19 @@ final class ProviderCatalog
         ];
     }
 
+    /** Default embedding model per provider; providers without an entry do not support embeddings. */
+    private const EMBEDDING_MODELS = [
+        'openai' => 'text-embedding-3-small',
+        'openrouter' => 'openai/text-embedding-3-small',
+        'gemini' => 'gemini-embedding-001',
+        'ollama' => 'nomic-embed-text',
+    ];
+
+    public static function embeddingModel(string $id): string
+    {
+        return self::EMBEDDING_MODELS[$id] ?? '';
+    }
+
     /** @return list<string> */
     public static function ids(): array
     {

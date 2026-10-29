@@ -11,6 +11,7 @@ function ProviderCard({ provider, isDefault }: { provider: ProviderInfo; isDefau
   const queryClient = useQueryClient();
   const [apiKey, setApiKey] = useState('');
   const [model, setModel] = useState(provider.model);
+  const [embeddingModel, setEmbeddingModel] = useState(provider.embedding_model);
   const [maxTokens, setMaxTokens] = useState(provider.max_tokens ? String(provider.max_tokens) : '');
   const [baseUrl, setBaseUrl] = useState(provider.base_url);
   const [saved, setSaved] = useState(false);
@@ -18,7 +19,7 @@ function ProviderCard({ provider, isDefault }: { provider: ProviderInfo; isDefau
 
   const refresh = () => queryClient.invalidateQueries({ queryKey: ['settings'] });
   const save = useMutation({
-    mutationFn: () => saveProvider(provider.id, { ...(apiKey ? { api_key: apiKey } : {}), model, max_tokens: Number(maxTokens) || 0, base_url: baseUrl }),
+    mutationFn: () => saveProvider(provider.id, { ...(apiKey ? { api_key: apiKey } : {}), model, embedding_model: embeddingModel, max_tokens: Number(maxTokens) || 0, base_url: baseUrl }),
     onSuccess: () => { setApiKey(''); setSaved(true); setResult(null); refresh(); }
   });
   const clear = useMutation({ mutationFn: () => saveProvider(provider.id, { clear_key: true }), onSuccess: () => { setResult(null); refresh(); } });
@@ -38,6 +39,9 @@ function ProviderCard({ provider, isDefault }: { provider: ProviderInfo; isDefau
       <label className="text-xs text-slate-500">Model
         <input value={model} onChange={(e) => { setModel(e.target.value); setSaved(false); }} placeholder={provider.default_model} className={field} />
       </label>
+      {provider.default_embedding_model && <label className="text-xs text-slate-500">Embedding model
+        <input value={embeddingModel} onChange={(e) => { setEmbeddingModel(e.target.value); setSaved(false); }} placeholder={provider.default_embedding_model} className={field} />
+      </label>}
       <label className="text-xs text-slate-500">Max tokens per reply
         <input inputMode="numeric" value={maxTokens} onChange={(e) => { setMaxTokens(e.target.value.replace(/\D/g, '')); setSaved(false); }} placeholder="1024" className={field} />
       </label>

@@ -45,7 +45,7 @@ final class SettingsController
         $settings = $this->container->get(ProviderSettings::class);
         $providers = [];
         foreach (ProviderCatalog::all() as $id => $meta) {
-            $providers[] = ['id' => $id, 'label' => $meta['label'], 'default_model' => $meta['default_model'], 'needs_key' => $meta['needs_key']] + $settings->public($id);
+            $providers[] = ['id' => $id, 'label' => $meta['label'], 'default_model' => $meta['default_model'], 'needs_key' => $meta['needs_key'], 'default_embedding_model' => ProviderCatalog::embeddingModel($id)] + $settings->public($id);
         }
         return rest_ensure_response(['providers' => $providers, 'default_provider' => $settings->defaultProvider()]);
     }
@@ -56,7 +56,7 @@ final class SettingsController
         if (! ProviderCatalog::exists($id)) {
             return new WP_Error('aicore_unknown_provider', __('Unknown AI provider.', 'aicore-wp'), ['status' => 404]);
         }
-        $input = array_intersect_key((array) $request->get_json_params(), array_flip(['api_key', 'clear_key', 'model', 'max_tokens', 'base_url']));
+        $input = array_intersect_key((array) $request->get_json_params(), array_flip(['api_key', 'clear_key', 'model', 'embedding_model', 'max_tokens', 'base_url']));
         $this->container->get(ProviderSettings::class)->save($id, $input);
         $this->container->get(AuditLogger::class)->log('provider_settings_updated', ['provider' => $id, 'fields' => array_keys($input)]);
         return rest_ensure_response($this->container->get(ProviderSettings::class)->public($id));
