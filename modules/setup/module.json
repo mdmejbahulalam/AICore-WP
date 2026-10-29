@@ -1,8 +1,19 @@
 {
   "id": "setup",
-  "name": "AICore Setup",
+  "name": "Setup Wizard",
+  "description": "First-run configuration.",
   "enabledByDefault": true,
-  "description": "Enterprise AI setup capability pack for AICore WP.",
-  "events": ["aicore.setup.created", "aicore.setup.updated"],
-  "permissions": ["aicore:setup:read", "aicore:setup:write"]
+  "requires": [],
+  "capabilities": [
+    "GET /setup/status",
+    "POST /setup/save"
+  ],
+  "events": [
+    "aicore.setup.created",
+    "aicore.setup.updated"
+  ],
+  "permissions": [
+    "aicore:setup:read",
+    "aicore:setup:write"
+  ]
 }

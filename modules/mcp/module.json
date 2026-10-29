@@ -1,8 +1,19 @@
 {
   "id": "mcp",
-  "name": "AICore Mcp",
+  "name": "MCP Server",
+  "description": "Tool discovery and execution for external agents.",
   "enabledByDefault": true,
-  "description": "Enterprise AI mcp capability pack for AICore WP.",
-  "events": ["aicore.mcp.created", "aicore.mcp.updated"],
-  "permissions": ["aicore:mcp:read", "aicore:mcp:write"]
+  "requires": [],
+  "capabilities": [
+    "GET /mcp/tools",
+    "POST /mcp/execute"
+  ],
+  "events": [
+    "aicore.mcp.created",
+    "aicore.mcp.updated"
+  ],
+  "permissions": [
+    "aicore:mcp:read",
+    "aicore:mcp:write"
+  ]
 }

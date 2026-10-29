@@ -1,8 +1,19 @@
 {
   "id": "analytics",
-  "name": "AICore Analytics",
+  "name": "AI Analytics",
+  "description": "Usage tracking and insights.",
   "enabledByDefault": true,
-  "description": "Enterprise AI analytics capability pack for AICore WP.",
-  "events": ["aicore.analytics.created", "aicore.analytics.updated"],
-  "permissions": ["aicore:analytics:read", "aicore:analytics:write"]
+  "requires": [],
+  "capabilities": [
+    "GET /analytics/summary",
+    "GET /analytics/events"
+  ],
+  "events": [
+    "aicore.analytics.created",
+    "aicore.analytics.updated"
+  ],
+  "permissions": [
+    "aicore:analytics:read",
+    "aicore:analytics:write"
+  ]
 }

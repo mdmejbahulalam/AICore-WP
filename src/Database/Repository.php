@@ -33,6 +33,19 @@ final class Repository
         return is_array($row) ? $row : null;
     }
 
+    /**
+     * Run a read query. `{prefix}` in the SQL is replaced with the table prefix; values go through $args (wpdb::prepare).
+     *
+     * @param list<mixed> $args
+     * @return list<array<string,mixed>>
+     */
+    public function select(string $sql, array $args = []): array
+    {
+        $sql = str_replace('{prefix}', $this->db->prefix, $sql);
+        $prepared = $args === [] ? $sql : $this->db->prepare($sql, ...$args);
+        return (array) $this->db->get_results($prepared, ARRAY_A);
+    }
+
     /** @return list<array<string,mixed>> */
     public function recent(string $table, int $limit = 20): array
     {

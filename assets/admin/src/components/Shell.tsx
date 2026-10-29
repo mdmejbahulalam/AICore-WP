@@ -1,10 +1,10 @@
 import type { ReactNode } from 'react';
-import { Bell, Bot, BrainCircuit, CreditCard, Database, LayoutDashboard, Lock, MessagesSquare, PlugZap, Search, Settings, ShoppingCart, Sparkles, Workflow } from 'lucide-react';
+import { Bell, Boxes, Bot, BrainCircuit, CreditCard, Database, Gauge, KeyRound, LayoutDashboard, Lock, MessagesSquare, PlugZap, Search, Settings, ShoppingCart, Sparkles, Workflow } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useAppStore } from '../stores/app-store';
 
 const nav = [
-  ['Dashboard', LayoutDashboard], ['AI Chat Center', MessagesSquare], ['Content Studio', Sparkles], ['SEO Center', Search],
+  ['Dashboard', LayoutDashboard], ['Provider Settings', KeyRound], ['Modules', Boxes], ['Usage', Gauge], ['AI Chat Center', MessagesSquare], ['Content Studio', Sparkles], ['SEO Center', Search],
   ['Workflow Automation', Workflow], ['Chatbot Builder', Bot], ['AI Playground', BrainCircuit], ['Analytics', LayoutDashboard],
   ['MCP Settings', PlugZap], ['API Settings', Settings], ['Integrations', PlugZap], ['WooCommerce AI', ShoppingCart],
   ['Billing', CreditCard], ['Security Logs', Lock], ['Knowledge Base', Database], ['AI Memory Manager', BrainCircuit]
@@ -20,7 +20,9 @@ export function Shell({ children }: { children: ReactNode }) {
     <main className="xl:pl-72">
       <header className="sticky top-0 z-10 flex items-center justify-between border-b border-white/10 bg-white/70 px-6 py-4 backdrop-blur dark:bg-slate-950/70">
         <div><h1 className="text-2xl font-bold">{activePage}</h1><p className="text-sm text-slate-500">Welcome, {window.AICoreWP.user} · {window.AICoreWP.site}</p></div>
-        <div className="flex items-center gap-3"><button className="rounded-2xl border border-white/10 p-3"><Bell size={18}/></button><span className="rounded-full bg-emerald-500/15 px-3 py-1 text-xs text-emerald-500">{notifications.length} alerts</span></div>
+        <div className="flex items-center gap-3">
+          <select aria-label="Go to page" value={activePage} onChange={(event) => setActivePage(event.target.value)} className="rounded-2xl border border-white/10 bg-transparent px-3 py-2 text-sm xl:hidden">{nav.map(([label]) => <option key={label} value={label} className="text-slate-950">{label}</option>)}</select>
+          <button className="rounded-2xl border border-white/10 p-3"><Bell size={18}/></button><span className="rounded-full bg-emerald-500/15 px-3 py-1 text-xs text-emerald-500">{notifications.length} alerts</span></div>
       </header>
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="p-6">{children}</motion.div>
     </main>

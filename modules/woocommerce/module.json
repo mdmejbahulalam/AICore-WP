@@ -1,8 +1,19 @@
 {
   "id": "woocommerce",
-  "name": "AICore Woocommerce",
+  "name": "WooCommerce AI",
+  "description": "AI tools for WooCommerce stores.",
   "enabledByDefault": true,
-  "description": "Enterprise AI woocommerce capability pack for AICore WP.",
-  "events": ["aicore.woocommerce.created", "aicore.woocommerce.updated"],
-  "permissions": ["aicore:woocommerce:read", "aicore:woocommerce:write"]
+  "requires": [],
+  "capabilities": [
+    "POST /commerce/insights",
+    "POST /commerce/descriptions"
+  ],
+  "events": [
+    "aicore.woocommerce.created",
+    "aicore.woocommerce.updated"
+  ],
+  "permissions": [
+    "aicore:woocommerce:read",
+    "aicore:woocommerce:write"
+  ]
 }

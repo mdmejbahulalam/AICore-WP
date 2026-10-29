@@ -1,8 +1,19 @@
 {
   "id": "chat",
-  "name": "AICore Chat",
+  "name": "AI Chat Center",
+  "description": "Conversational assistant with history and tool calling.",
   "enabledByDefault": true,
-  "description": "Enterprise AI chat capability pack for AICore WP.",
-  "events": ["aicore.chat.created", "aicore.chat.updated"],
-  "permissions": ["aicore:chat:read", "aicore:chat:write"]
+  "requires": [],
+  "capabilities": [
+    "POST /command",
+    "GET /conversations"
+  ],
+  "events": [
+    "aicore.chat.created",
+    "aicore.chat.updated"
+  ],
+  "permissions": [
+    "aicore:chat:read",
+    "aicore:chat:write"
+  ]
 }

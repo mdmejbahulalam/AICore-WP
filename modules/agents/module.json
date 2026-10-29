@@ -1,8 +1,21 @@
 {
   "id": "agents",
-  "name": "AICore Agents",
+  "name": "Multi-Agent System",
+  "description": "Agents that plan and call tools.",
   "enabledByDefault": true,
-  "description": "Enterprise AI agents capability pack for AICore WP.",
-  "events": ["aicore.agents.created", "aicore.agents.updated"],
-  "permissions": ["aicore:agents:read", "aicore:agents:write"]
+  "requires": [
+    "chat"
+  ],
+  "capabilities": [
+    "GET /agents",
+    "POST /agents/delegate"
+  ],
+  "events": [
+    "aicore.agents.created",
+    "aicore.agents.updated"
+  ],
+  "permissions": [
+    "aicore:agents:read",
+    "aicore:agents:write"
+  ]
 }

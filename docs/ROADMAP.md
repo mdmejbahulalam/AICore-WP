@@ -16,15 +16,20 @@ for new PHP, `npm run build` + `php -l` green, manual verification on the local 
 - Fix known issues: public `/mcp/tools`, `embed()` stub flagged, `.gitignore` for `dist/`, `node_modules/`, lockfile policy.
 - **Done when:** one branch builds, tests run in CI, plugin activates cleanly on the test site.
 
-## Phase 1 — Core platform
-- Settings screen: provider API keys (encrypted at rest), default provider/model, per-provider max tokens, "Test connection".
-- Real module system: enable/disable per module, module settings, dependency order, per-module classes replacing `GenericModule`.
-- Usage logging into `usage_logs` (tokens, provider, model, cost estimate); central `AI` service used by all modules.
-- Streaming responses (SSE) and consistent error UI in React.
-- **Done when:** an admin can configure OpenRouter/Claude/etc. in the UI and every call is logged with usage.
+## Phase 1 — Core platform (done)
+- Settings screen: provider API keys encrypted at rest (libsodium, keyed from WP salts), default provider/model, per-provider
+  max tokens and custom endpoint, "Test connection".
+- Real module system: modules discovered from `modules/*/module.json`, per-module enable/disable with dependency
+  checks (`requires`), disabled modules register no routes. Module classes plug in as `AICore\WP\Modules\<Id>Module`.
+- Usage logging: central `AIService` records every real provider call (tokens, provider, model, estimated cost) in
+  `usage_logs`; Usage screen summarises it. Cost stays 0 until prices are set in `aicore_wp_model_prices`.
+- Consistent error handling in React (`ApiError`, `ErrorNotice`, `ErrorBoundary`); page selector on narrow screens.
+- Moved to later phases: streaming responses (SSE) → Phase 2 with the chat UI; per-module settings → the phase that
+  first needs them.
 
 ## Phase 2 — Chat + Memory
-- Chat module: persisted conversations/messages, history list, rename/delete, streaming UI, model picker.
+- Chat module: persisted conversations/messages, history list, rename/delete, streaming UI (SSE; needs a cURL-based
+  streaming transport in the provider layer), model picker.
 - Memory module: CRUD of user/site memories injected into prompts; real embeddings via provider `embeddings` endpoints (replace fake `embed()`).
 - **Done when:** multi-turn chat survives reload; memories change answers.
 

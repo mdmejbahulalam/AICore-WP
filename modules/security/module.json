@@ -1,8 +1,16 @@
 {
   "id": "security",
-  "name": "AICore Security",
+  "name": "Security Controls",
+  "description": "Audit log, permissions and moderation.",
   "enabledByDefault": true,
-  "description": "Enterprise AI security capability pack for AICore WP.",
-  "events": ["aicore.security.created", "aicore.security.updated"],
-  "permissions": ["aicore:security:read", "aicore:security:write"]
+  "requires": [],
+  "capabilities": [],
+  "events": [
+    "aicore.security.created",
+    "aicore.security.updated"
+  ],
+  "permissions": [
+    "aicore:security:read",
+    "aicore:security:write"
+  ]
 }

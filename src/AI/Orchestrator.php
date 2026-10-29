@@ -11,7 +11,7 @@ use WP_Error;
 
 final class Orchestrator
 {
-    public function __construct(private readonly ProviderRegistry $providers, private readonly Repository $repository, private readonly AuditLogger $auditLogger)
+    public function __construct(private readonly AIService $ai, private readonly Repository $repository, private readonly AuditLogger $auditLogger)
     {
     }
 
@@ -28,10 +28,10 @@ final class Orchestrator
         ]);
         $system = 'You are AICore WP, an AI operating system for WordPress. Reason step-by-step, ask for confirmation before destructive actions, and prefer drafts/previews.';
         try {
-            $response = $this->providers->get($context['provider'] ?? null)->chat([
+            $response = $this->ai->chat([
                 ['role' => 'system', 'content' => $system],
                 ['role' => 'user', 'content' => $prompt],
-            ], $context);
+            ], $context, 'command');
         } catch (Throwable $e) {
             $this->repository->update('aicore_ai_conversations', $conversationId, ['status' => 'failed', 'updated_at' => current_time('mysql', true)]);
             $this->auditLogger->log('command_failed', ['conversation_id' => $conversationId, 'error' => $e->getMessage()]);
@@ -40,7 +40,7 @@ final class Orchestrator
         $this->repository->insert('aicore_ai_messages', [
             'conversation_id' => $conversationId,
             'role' => 'assistant',
-            'provider' => (string) ($context['provider'] ?? get_option('aicore_wp_default_provider', 'openai')),
+            'provider' => (string) ($response->metadata['provider'] ?? $context['provider'] ?? ''),
             'model' => (string) ($response->metadata['model'] ?? $context['model'] ?? 'default'),
             'content' => $response->content,
             'tool_calls' => wp_json_encode([]),

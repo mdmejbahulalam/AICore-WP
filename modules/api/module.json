@@ -1,8 +1,16 @@
 {
   "id": "api",
-  "name": "AICore Api",
+  "name": "Public API",
+  "description": "API keys and public REST endpoints.",
   "enabledByDefault": true,
-  "description": "Enterprise AI api capability pack for AICore WP.",
-  "events": ["aicore.api.created", "aicore.api.updated"],
-  "permissions": ["aicore:api:read", "aicore:api:write"]
+  "requires": [],
+  "capabilities": [],
+  "events": [
+    "aicore.api.created",
+    "aicore.api.updated"
+  ],
+  "permissions": [
+    "aicore:api:read",
+    "aicore:api:write"
+  ]
 }

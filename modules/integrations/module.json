@@ -1,8 +1,19 @@
 {
   "id": "integrations",
-  "name": "AICore Integrations",
+  "name": "Integrations",
+  "description": "Webhooks and third-party connectors.",
   "enabledByDefault": true,
-  "description": "Enterprise AI integrations capability pack for AICore WP.",
-  "events": ["aicore.integrations.created", "aicore.integrations.updated"],
-  "permissions": ["aicore:integrations:read", "aicore:integrations:write"]
+  "requires": [],
+  "capabilities": [
+    "GET /integrations",
+    "POST /integrations/connect"
+  ],
+  "events": [
+    "aicore.integrations.created",
+    "aicore.integrations.updated"
+  ],
+  "permissions": [
+    "aicore:integrations:read",
+    "aicore:integrations:write"
+  ]
 }

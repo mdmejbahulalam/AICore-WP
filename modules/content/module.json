@@ -1,8 +1,19 @@
 {
   "id": "content",
-  "name": "AICore Content",
+  "name": "Content Studio",
+  "description": "AI content generation and rewriting.",
   "enabledByDefault": true,
-  "description": "Enterprise AI content capability pack for AICore WP.",
-  "events": ["aicore.content.created", "aicore.content.updated"],
-  "permissions": ["aicore:content:read", "aicore:content:write"]
+  "requires": [],
+  "capabilities": [
+    "POST /content/generate",
+    "POST /content/bulk"
+  ],
+  "events": [
+    "aicore.content.created",
+    "aicore.content.updated"
+  ],
+  "permissions": [
+    "aicore:content:read",
+    "aicore:content:write"
+  ]
 }

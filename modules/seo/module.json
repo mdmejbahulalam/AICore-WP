@@ -1,8 +1,19 @@
 {
   "id": "seo",
-  "name": "AICore Seo",
+  "name": "SEO Center",
+  "description": "SEO audits and AI optimisation.",
   "enabledByDefault": true,
-  "description": "Enterprise AI seo capability pack for AICore WP.",
-  "events": ["aicore.seo.created", "aicore.seo.updated"],
-  "permissions": ["aicore:seo:read", "aicore:seo:write"]
+  "requires": [],
+  "capabilities": [
+    "POST /seo/audit",
+    "POST /seo/optimize"
+  ],
+  "events": [
+    "aicore.seo.created",
+    "aicore.seo.updated"
+  ],
+  "permissions": [
+    "aicore:seo:read",
+    "aicore:seo:write"
+  ]
 }

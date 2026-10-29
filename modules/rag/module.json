@@ -1,8 +1,21 @@
 {
   "id": "rag",
-  "name": "AICore Rag",
+  "name": "Knowledge RAG",
+  "description": "Index site content and answer from it with citations.",
   "enabledByDefault": true,
-  "description": "Enterprise AI rag capability pack for AICore WP.",
-  "events": ["aicore.rag.created", "aicore.rag.updated"],
-  "permissions": ["aicore:rag:read", "aicore:rag:write"]
+  "requires": [
+    "memory"
+  ],
+  "capabilities": [
+    "POST /rag/index",
+    "POST /rag/search"
+  ],
+  "events": [
+    "aicore.rag.created",
+    "aicore.rag.updated"
+  ],
+  "permissions": [
+    "aicore:rag:read",
+    "aicore:rag:write"
+  ]
 }

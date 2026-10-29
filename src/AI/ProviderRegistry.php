@@ -11,10 +11,10 @@ final class ProviderRegistry
     /** @var array<string, ProviderInterface> */
     private array $providers = [];
 
-    public function __construct()
+    public function __construct(private readonly ProviderSettings $settings)
     {
-        foreach (['openai', 'claude', 'gemini', 'deepseek', 'openrouter', 'groq', 'ollama'] as $provider) {
-            $this->register(new RemoteProvider($provider));
+        foreach (ProviderCatalog::ids() as $provider) {
+            $this->register(new RemoteProvider($provider, $settings));
         }
     }
 
@@ -25,7 +25,7 @@ final class ProviderRegistry
 
     public function get(?string $id = null): ProviderInterface
     {
-        $id = $id ?: (string) get_option('aicore_wp_default_provider', 'openai');
+        $id = $id ?: $this->settings->defaultProvider();
         if (! isset($this->providers[$id])) {
             throw new RuntimeException("AI provider {$id} is not registered.");
         }

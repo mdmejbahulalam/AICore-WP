@@ -5,13 +5,17 @@ declare(strict_types=1);
 namespace AICore\WP\Core;
 
 use AICore\WP\Admin\AdminApp;
+use AICore\WP\AI\AIService;
 use AICore\WP\AI\Orchestrator;
 use AICore\WP\AI\ProviderRegistry;
+use AICore\WP\AI\ProviderSettings;
+use AICore\WP\AI\UsageTracker;
 use AICore\WP\Api\RestRouter;
 use AICore\WP\Database\Repository;
 use AICore\WP\Modules\ModuleRegistry;
 use AICore\WP\Queue\QueueWorker;
 use AICore\WP\Security\AuditLogger;
+use AICore\WP\Security\Crypto;
 use AICore\WP\Security\PermissionGuard;
 use AICore\WP\Security\RateLimiter;
 
@@ -67,8 +71,12 @@ final class Plugin
         $this->container->singleton(AuditLogger::class, fn (Container $c): AuditLogger => new AuditLogger($c->get(Repository::class)));
         $this->container->singleton(RateLimiter::class, fn (): RateLimiter => new RateLimiter());
         $this->container->singleton(PermissionGuard::class, fn (Container $c): PermissionGuard => new PermissionGuard($c->get(AuditLogger::class)));
-        $this->container->singleton(ProviderRegistry::class, fn (): ProviderRegistry => new ProviderRegistry());
-        $this->container->singleton(Orchestrator::class, fn (Container $c): Orchestrator => new Orchestrator($c->get(ProviderRegistry::class), $c->get(Repository::class), $c->get(AuditLogger::class)));
+        $this->container->singleton(Crypto::class, fn (): Crypto => new Crypto());
+        $this->container->singleton(ProviderSettings::class, fn (Container $c): ProviderSettings => new ProviderSettings($c->get(Crypto::class)));
+        $this->container->singleton(ProviderRegistry::class, fn (Container $c): ProviderRegistry => new ProviderRegistry($c->get(ProviderSettings::class)));
+        $this->container->singleton(UsageTracker::class, fn (Container $c): UsageTracker => new UsageTracker($c->get(Repository::class)));
+        $this->container->singleton(AIService::class, fn (Container $c): AIService => new AIService($c->get(ProviderRegistry::class), $c->get(UsageTracker::class)));
+        $this->container->singleton(Orchestrator::class, fn (Container $c): Orchestrator => new Orchestrator($c->get(AIService::class), $c->get(Repository::class), $c->get(AuditLogger::class)));
         $this->container->singleton(ModuleRegistry::class, fn (): ModuleRegistry => new ModuleRegistry());
         $this->container->singleton(RestRouter::class, fn (Container $c): RestRouter => new RestRouter($c));
         $this->container->singleton(AdminApp::class, fn (): AdminApp => new AdminApp());

@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
+use AICore\WP\AI\ProviderSettings;
 use AICore\WP\AI\RemoteProvider;
+use AICore\WP\Security\Crypto;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
@@ -16,6 +18,43 @@ final class RemoteProviderTest extends TestCase
     protected function setUp(): void
     {
         WpStub::reset();
+    }
+
+    private function provider(string $id): RemoteProvider
+    {
+        return new RemoteProvider($id, new ProviderSettings(new Crypto()));
+    }
+
+    public function testFallsBackToCatalogModelWhenNoneConfigured(): void
+    {
+        WpStub::$options['aicore_wp_provider_settings'] = ['deepseek' => ['api_key' => 'k']];
+        $this->respondWith(200, ['choices' => [['message' => ['content' => 'ok']]]]);
+
+        $response = $this->provider('deepseek')->chat(self::MESSAGES);
+
+        self::assertSame('deepseek-chat', $this->sentBody()['model']);
+        self::assertSame('deepseek', $response->metadata['provider']);
+    }
+
+    public function testOllamaWorksWithoutAKey(): void
+    {
+        $this->respondWith(200, ['choices' => [['message' => ['content' => 'local']]]]);
+
+        $response = $this->provider('ollama')->chat(self::MESSAGES);
+
+        self::assertSame('local', $response->content);
+        self::assertArrayNotHasKey('Authorization', WpStub::$requests[0]['args']['headers']);
+    }
+
+    public function testEncryptedKeyIsDecryptedForTheRequest(): void
+    {
+        $settings = new ProviderSettings(new Crypto());
+        $settings->save('openai', ['api_key' => 'sk-secret-1234']);
+        $this->respondWith(200, ['choices' => [['message' => ['content' => 'ok']]]]);
+
+        (new RemoteProvider('openai', $settings))->chat(self::MESSAGES);
+
+        self::assertSame('Bearer sk-secret-1234', WpStub::$requests[0]['args']['headers']['Authorization']);
     }
 
     /** @param array<string,mixed> $body */
@@ -32,7 +71,7 @@ final class RemoteProviderTest extends TestCase
 
     public function testUnconfiguredProviderReturnsPreview(): void
     {
-        $response = (new RemoteProvider('openai'))->chat(self::MESSAGES);
+        $response = $this->provider('openai')->chat(self::MESSAGES);
 
         self::assertStringContainsString('Provider not configured', $response->content);
         self::assertSame('preview', $response->metadata['mode']);
@@ -44,7 +83,7 @@ final class RemoteProviderTest extends TestCase
         WpStub::$options['aicore_wp_provider_settings'] = ['claude' => ['api_key' => 'k', 'model' => 'claude-x']];
         $this->respondWith(200, ['model' => 'claude-x', 'content' => [['type' => 'text', 'text' => 'hi']], 'usage' => ['input_tokens' => 11, 'output_tokens' => 3]]);
 
-        $response = (new RemoteProvider('claude'))->chat(self::MESSAGES);
+        $response = $this->provider('claude')->chat(self::MESSAGES);
 
         $request = WpStub::$requests[0];
         self::assertSame('https://api.anthropic.com/v1/messages', $request['url']);
@@ -77,7 +116,7 @@ final class RemoteProviderTest extends TestCase
         WpStub::$options['aicore_wp_provider_settings'] = [$id => ['api_key' => 'k', 'model' => 'm']];
         $this->respondWith(200, ['model' => 'm-real', 'choices' => [['message' => ['content' => 'ok']]], 'usage' => ['prompt_tokens' => 5, 'completion_tokens' => 2]]);
 
-        $response = (new RemoteProvider($id))->chat(self::MESSAGES, ['max_tokens' => 20]);
+        $response = $this->provider($id)->chat(self::MESSAGES, ['max_tokens' => 20]);
 
         self::assertSame($endpoint, WpStub::$requests[0]['url']);
         self::assertSame('Bearer k', WpStub::$requests[0]['args']['headers']['Authorization']);
@@ -94,7 +133,7 @@ final class RemoteProviderTest extends TestCase
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('openrouter API error (402): need credits');
-        (new RemoteProvider('openrouter'))->chat(self::MESSAGES);
+        $this->provider('openrouter')->chat(self::MESSAGES);
     }
 
     public function testTransportErrorThrows(): void
@@ -104,7 +143,7 @@ final class RemoteProviderTest extends TestCase
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('groq request failed: timeout');
-        (new RemoteProvider('groq'))->chat(self::MESSAGES);
+        $this->provider('groq')->chat(self::MESSAGES);
     }
 
     public function testUnknownProviderIsRejected(): void
@@ -113,6 +152,6 @@ final class RemoteProviderTest extends TestCase
         $this->respondWith(200, []);
 
         $this->expectException(RuntimeException::class);
-        (new RemoteProvider('mystery'))->chat(self::MESSAGES);
+        $this->provider('mystery')->chat(self::MESSAGES);
     }
 }

@@ -1,8 +1,19 @@
 {
   "id": "memory",
-  "name": "AICore Memory",
+  "name": "AI Memory Manager",
+  "description": "Long-term memories and embeddings.",
   "enabledByDefault": true,
-  "description": "Enterprise AI memory capability pack for AICore WP.",
-  "events": ["aicore.memory.created", "aicore.memory.updated"],
-  "permissions": ["aicore:memory:read", "aicore:memory:write"]
+  "requires": [],
+  "capabilities": [
+    "GET /memories",
+    "POST /memories"
+  ],
+  "events": [
+    "aicore.memory.created",
+    "aicore.memory.updated"
+  ],
+  "permissions": [
+    "aicore:memory:read",
+    "aicore:memory:write"
+  ]
 }

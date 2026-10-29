@@ -30,11 +30,7 @@ final class RestRouter
             'callback' => [$this, 'command'],
             'args' => ['prompt' => ['type' => 'string', 'required' => true]],
         ]);
-        register_rest_route(self::NAMESPACE, '/modules', [
-            'methods' => 'GET',
-            'permission_callback' => fn () => $this->container->get(PermissionGuard::class)->requireCapability('manage_options'),
-            'callback' => fn () => rest_ensure_response($this->container->get(ModuleRegistry::class)->manifest()),
-        ]);
+        (new SettingsController($this->container))->register(self::NAMESPACE);
         register_rest_route(self::NAMESPACE, '/mcp/tools', [
             'methods' => 'GET',
             'permission_callback' => [$this, 'mcpPermission'],

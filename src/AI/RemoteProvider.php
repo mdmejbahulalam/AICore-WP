@@ -10,7 +10,7 @@ final class RemoteProvider implements ProviderInterface
 {
     private const ANTHROPIC_VERSION = '2023-06-01';
 
-    public function __construct(private readonly string $id)
+    public function __construct(private readonly string $id, private readonly ProviderSettings $settings)
     {
     }
 
@@ -21,18 +21,17 @@ final class RemoteProvider implements ProviderInterface
 
     public function chat(array $messages, array $options = []): AIResponse
     {
-        $settings = (array) get_option('aicore_wp_provider_settings', []);
-        $config = (array) ($settings[$this->id] ?? []);
-        $apiKey = (string) ($config['api_key'] ?? '');
-        if ($apiKey === '' && $this->id !== 'ollama') {
+        $config = $this->settings->config($this->id);
+        $apiKey = $config['api_key'];
+        if ($apiKey === '' && (ProviderCatalog::all()[$this->id]['needs_key'] ?? true)) {
             $last = end($messages);
-            return new AIResponse('Provider not configured. Preview response for: ' . sanitize_text_field((string) ($last['content'] ?? '')), 0, 0, ['mode' => 'preview', 'model' => 'preview']);
+            return new AIResponse('Provider not configured. Preview response for: ' . sanitize_text_field((string) ($last['content'] ?? '')), 0, 0, ['mode' => 'preview', 'model' => 'preview', 'provider' => $this->id]);
         }
 
-        $model = (string) ($options['model'] ?? $config['model'] ?? 'default');
-        $maxTokens = (int) ($options['max_tokens'] ?? $config['max_tokens'] ?? 1024);
+        $model = (string) ($options['model'] ?? ($config['model'] !== '' ? $config['model'] : ProviderCatalog::defaultModel($this->id)));
+        $maxTokens = (int) ($options['max_tokens'] ?? ($config['max_tokens'] > 0 ? $config['max_tokens'] : 1024));
         $temperature = $options['temperature'] ?? 0.4;
-        $endpoint = $this->endpoint($config['base_url'] ?? null);
+        $endpoint = $this->endpoint($config['base_url']);
 
         if ($this->id === 'claude') {
             [$headers, $body] = $this->anthropicRequest($apiKey, $model, $messages, $maxTokens, $temperature);
@@ -71,7 +70,7 @@ final class RemoteProvider implements ProviderInterface
             $output = (int) ($json['usage']['completion_tokens'] ?? 0);
         }
 
-        return new AIResponse($content, $input, $output, ['model' => (string) ($json['model'] ?? $model), 'raw' => $json]);
+        return new AIResponse($content, $input, $output, ['model' => (string) ($json['model'] ?? $model), 'provider' => $this->id, 'raw' => $json]);
     }
 
     public function embed(string $input): array
@@ -104,9 +103,9 @@ final class RemoteProvider implements ProviderInterface
         return [$headers, $body];
     }
 
-    private function endpoint(?string $custom): string
+    private function endpoint(string $custom): string
     {
-        if (is_string($custom) && $custom !== '') {
+        if ($custom !== '') {
             return esc_url_raw($custom);
         }
         return match ($this->id) {

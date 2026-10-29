@@ -1,8 +1,21 @@
 {
   "id": "billing",
-  "name": "AICore Billing",
+  "name": "Billing + Usage",
+  "description": "Plans, quotas and usage-based limits.",
   "enabledByDefault": true,
-  "description": "Enterprise AI billing capability pack for AICore WP.",
-  "events": ["aicore.billing.created", "aicore.billing.updated"],
-  "permissions": ["aicore:billing:read", "aicore:billing:write"]
+  "requires": [
+    "analytics"
+  ],
+  "capabilities": [
+    "GET /billing/usage",
+    "POST /billing/checkout"
+  ],
+  "events": [
+    "aicore.billing.created",
+    "aicore.billing.updated"
+  ],
+  "permissions": [
+    "aicore:billing:read",
+    "aicore:billing:write"
+  ]
 }

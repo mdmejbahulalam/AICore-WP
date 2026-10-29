@@ -18,6 +18,16 @@ if (! class_exists('WP_Error')) {
         {
             return $this->message;
         }
+
+        public function get_error_code(): string
+        {
+            return $this->code;
+        }
+
+        public function get_error_data(): mixed
+        {
+            return $this->data;
+        }
     }
 }
 
@@ -44,14 +54,35 @@ function get_option(string $name, mixed $default = false): mixed
     return WpStub::$options[$name] ?? $default;
 }
 
+function update_option(string $name, mixed $value, mixed $autoload = null): bool
+{
+    WpStub::$options[$name] = $value;
+    return true;
+}
+
+function wp_salt(string $scheme = 'auth'): string
+{
+    return 'test-salt-' . $scheme;
+}
+
+function apply_filters(string $hook, mixed $value, mixed ...$args): mixed
+{
+    return $value;
+}
+
+function do_action(string $hook, mixed ...$args): void
+{
+}
+
 function sanitize_text_field(string $value): string
 {
     return trim(strip_tags($value));
 }
 
-function esc_url_raw(string $url): string
+function esc_url_raw(string $url, ?array $protocols = null): string
 {
-    return $url;
+    $scheme = (string) parse_url($url, PHP_URL_SCHEME);
+    return in_array($scheme, $protocols ?? ['http', 'https'], true) ? $url : '';
 }
 
 function wp_json_encode(mixed $value): string|false

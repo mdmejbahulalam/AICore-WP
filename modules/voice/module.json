@@ -1,8 +1,19 @@
 {
   "id": "voice",
-  "name": "AICore Voice",
+  "name": "Voice + Multimodal",
+  "description": "Speech-to-text and text-to-speech.",
   "enabledByDefault": true,
-  "description": "Enterprise AI voice capability pack for AICore WP.",
-  "events": ["aicore.voice.created", "aicore.voice.updated"],
-  "permissions": ["aicore:voice:read", "aicore:voice:write"]
+  "requires": [],
+  "capabilities": [
+    "POST /voice/transcribe",
+    "POST /voice/speak"
+  ],
+  "events": [
+    "aicore.voice.created",
+    "aicore.voice.updated"
+  ],
+  "permissions": [
+    "aicore:voice:read",
+    "aicore:voice:write"
+  ]
 }

@@ -1,8 +1,19 @@
 {
   "id": "workflows",
-  "name": "AICore Workflows",
+  "name": "Workflow Automation",
+  "description": "Triggers, actions and AI steps run by the queue.",
   "enabledByDefault": true,
-  "description": "Enterprise AI workflows capability pack for AICore WP.",
-  "events": ["aicore.workflows.created", "aicore.workflows.updated"],
-  "permissions": ["aicore:workflows:read", "aicore:workflows:write"]
+  "requires": [],
+  "capabilities": [
+    "GET /workflows",
+    "POST /workflows/run"
+  ],
+  "events": [
+    "aicore.workflows.created",
+    "aicore.workflows.updated"
+  ],
+  "permissions": [
+    "aicore:workflows:read",
+    "aicore:workflows:write"
+  ]
 }
