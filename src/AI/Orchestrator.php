@@ -6,6 +6,8 @@ namespace AICore\WP\AI;
 
 use AICore\WP\Database\Repository;
 use AICore\WP\Security\AuditLogger;
+use Throwable;
+use WP_Error;
 
 final class Orchestrator
 {
@@ -13,8 +15,8 @@ final class Orchestrator
     {
     }
 
-    /** @param array<string,mixed> $context @return array<string,mixed> */
-    public function command(string $prompt, array $context = []): array
+    /** @param array<string,mixed> $context @return array<string,mixed>|WP_Error */
+    public function command(string $prompt, array $context = []): array|WP_Error
     {
         $conversationId = $this->repository->insert('aicore_ai_conversations', [
             'user_id' => get_current_user_id() ?: null,
@@ -25,15 +27,21 @@ final class Orchestrator
             'updated_at' => current_time('mysql', true),
         ]);
         $system = 'You are AICore WP, an AI operating system for WordPress. Reason step-by-step, ask for confirmation before destructive actions, and prefer drafts/previews.';
-        $response = $this->providers->get($context['provider'] ?? null)->chat([
-            ['role' => 'system', 'content' => $system],
-            ['role' => 'user', 'content' => $prompt],
-        ], $context);
+        try {
+            $response = $this->providers->get($context['provider'] ?? null)->chat([
+                ['role' => 'system', 'content' => $system],
+                ['role' => 'user', 'content' => $prompt],
+            ], $context);
+        } catch (Throwable $e) {
+            $this->repository->update('aicore_ai_conversations', $conversationId, ['status' => 'failed', 'updated_at' => current_time('mysql', true)]);
+            $this->auditLogger->log('command_failed', ['conversation_id' => $conversationId, 'error' => $e->getMessage()]);
+            return new WP_Error('aicore_provider_error', $e->getMessage(), ['status' => 502, 'conversation_id' => $conversationId]);
+        }
         $this->repository->insert('aicore_ai_messages', [
             'conversation_id' => $conversationId,
             'role' => 'assistant',
             'provider' => (string) ($context['provider'] ?? get_option('aicore_wp_default_provider', 'openai')),
-            'model' => (string) ($context['model'] ?? 'default'),
+            'model' => (string) ($response->metadata['model'] ?? $context['model'] ?? 'default'),
             'content' => $response->content,
             'tool_calls' => wp_json_encode([]),
             'tokens' => $response->inputTokens + $response->outputTokens,

@@ -19,6 +19,12 @@ final class Repository
         return (int) $this->db->insert_id;
     }
 
+    /** @param array<string,mixed> $data */
+    public function update(string $table, int $id, array $data): bool
+    {
+        return $this->db->update($this->db->prefix . $table, $data, ['id' => $id]) !== false;
+    }
+
     /** @return array<string,mixed>|null */
     public function find(string $table, int $id): ?array
     {

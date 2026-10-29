@@ -10,6 +10,7 @@ use AICore\WP\Core\Container;
 use AICore\WP\Modules\ModuleRegistry;
 use AICore\WP\Security\PermissionGuard;
 use AICore\WP\Security\RateLimiter;
+use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -49,7 +50,7 @@ final class RestRouter
         }
     }
 
-    public function command(WP_REST_Request $request): WP_REST_Response
+    public function command(WP_REST_Request $request): WP_REST_Response|WP_Error
     {
         $limited = $this->container->get(RateLimiter::class)->hit('command', 60, HOUR_IN_SECONDS);
         if (is_wp_error($limited)) {
